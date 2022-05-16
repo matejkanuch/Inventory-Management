@@ -1,7 +1,7 @@
 import datetime
 from flask import render_template, url_for, flash, redirect, request
 from inventorymanagement import app, bcrypt, mysql, db
-from inventorymanagement.forms import RegistrationForm, LoginForm, AddProduct, AddLocation, ProductMovement
+from inventorymanagement.forms import RegistrationForm, LoginForm, AddProduct, AddLocation, ProductMovement, SearchProduct
 from inventorymanagement.models import User
 from flask_login import login_user, current_user, logout_user, login_required
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, DateTimeField, SelectField, Label
@@ -188,17 +188,51 @@ def product_info(product_id):
         quantities.pop(0)
     return render_template('product_info.html', title='Product', form=form, values=values, locations=locations, quantities=quantities, ranges=ranges)
 
+@app.route("/remove_product?<int:product_id>", methods=['GET', 'POST'])
+@login_required
+def remove_product(product_id):
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM product WHERE product_id='"+ str(product_id) +"'")
+    conn.commit()
+    flash('Product Deleted', 'success')
+    return redirect(url_for('view_product'))
+
+@app.route("/search_product")
+@login_required
+def search_product():
+    form = SearchProduct()
+    """
+    if form.validate_on_submit():
+        name = form.name.data
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        products = cursor.execute("SELECT * FROM product WHERE product_name LIKE '"+ name + "'")
+        products = cursor.fetchall()
+        inventory_places = cursor.execute("SELECT * FROM locationinventory")
+        inventory_places = cursor.fetchall()
+        return render_template('view_product.html', title='Product', products=products, inventory_places=inventory_places)
+    """
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    products = cursor.execute("SELECT * FROM product")
+    products = cursor.fetchall()
+    inventory_places = cursor.execute("SELECT * FROM locationinventory")
+    inventory_places = cursor.fetchall()
+    return render_template('view_product.html', title='Product', form = form, products=products, inventory_places=inventory_places)
+    
 
 @app.route("/view_product")
 @login_required
 def view_product():
+    form = SearchProduct()
     conn = mysql.connect()
     cursor = conn.cursor()
-    products = cursor.execute("SELECT * FROM product WHERE user_id='"+ str(current_user.user_id)+"'")
+    products = cursor.execute("SELECT * FROM product")
     products = cursor.fetchall()
     inventory_places = cursor.execute("SELECT * FROM locationinventory")
     inventory_places = cursor.fetchall()
-    return render_template('view_product.html', title='Product', products=products, inventory_places=inventory_places)
+    return render_template('view_product.html', title='Product', form = form, products=products, inventory_places=inventory_places)
 
 ########################Locations######################################
 
@@ -224,6 +258,16 @@ def add_location():
             return redirect(url_for('add_location'))
         
     return render_template('add_location.html', title='Location', form=form)
+
+@app.route("/remove_location?<int:location_id>", methods=['GET', 'POST'])
+@login_required
+def remove_location(location_id):
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM location WHERE location_id='"+ str(location_id) +"'")
+    conn.commit()
+    flash('Location Deleted', 'success')
+    return redirect(url_for('view_location'))
 
 @app.route("/edit_location?<int:location_id>", methods=['GET', 'POST'])
 @login_required

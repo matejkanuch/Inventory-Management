@@ -17,6 +17,23 @@
                     <div class="col-md-10">
                         <h2>Inventory Product</h2>
                     </div>
+                    <!--
+                    <div class="col-md-12">
+                        <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                            <fieldset class="form-group">
+                                <div class="form-group">
+                                    {{ form.name.label(class="form-control-label") }}
+                                    {{ form.name(class="form-control form-control-lg") }}
+                                </div>
+                            </fieldset>
+                            <div class="col-md-2 float-right">
+                                {% set href = url_for('view_product') %}
+                                <button class="btn btn-success navbar-dark bg-dark" onclick=" window.location.href='{{ href }}';">Search Product</button>
+                            </div>
+                        </form>
+                    </div>
+                    -->
                     <div class="col-md-2 float-right">
                         {% set href = url_for('add_product') %}
                         <button class="btn btn-success navbar-dark bg-dark" onclick=" window.location.href='{{ href }}';">Add Product</button>
@@ -52,6 +69,9 @@
                                     <div class="col border-left pt-2">
                                         Move
                                     </div>
+                                    <div class="col border-left pt-2">
+                                        Delete
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -79,6 +99,9 @@
                                         </div>
                                         <div class="col border-left pt-2">
                                             <a href="{{ url_for('add_productmovement', product_id=product[0]) }}">Move</a>
+                                        </div>
+                                        <div class="col border-left pt-2">
+                                            <a href="{{ url_for('remove_product', product_id=product[0]) }}">Delete</a>
                                         </div>
                                     </div>
                                 </div>

@@ -43,6 +43,9 @@
                                     <div class="col border-left pt-2">
                                         Edit
                                     </div>
+                                    <div class="col border-left pt-2">
+                                        Delete
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -61,6 +64,9 @@
                                     </div>
                                     <div class="col border-left pt-2">
                                             <a href="{{ url_for('edit_location', location_id=location[0]) }}">Edit</a>
+                                    </div>
+                                    <div class="col border-left pt-2">
+                                        <a href="{{ url_for('remove_location', location_id=location[0]) }}">Delete</a>
                                     </div>
                                 </div>
                             </div>

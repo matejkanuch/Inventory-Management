@@ -35,6 +35,9 @@ class AddProduct(FlaskForm):
     name = StringField('Product Name', validators=[DataRequired()])
     submit = SubmitField('Add Product')
 
+class SearchProduct(FlaskForm):
+    name = StringField('Product Name', validators=[DataRequired()])
+    submit = SubmitField('Search')
 ########################Locations######################################
 
 class AddLocation(FlaskForm):

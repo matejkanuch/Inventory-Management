@@ -15,7 +15,7 @@ db = SQLAlchemy(app)
 #################Products MySQL#################
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'caching_sha2_password'
 app.config['MYSQL_DATABASE_DB'] = 'inventory_management'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql = MySQL(app)
